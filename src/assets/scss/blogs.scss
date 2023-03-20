@@ -1,0 +1,10 @@
+.blogs {
+		&-item {
+				display: flex;
+				gap: 4px;
+				&-image {
+						width: 64px;
+						height: 64px;
+				}
+		}
+}

@@ -1,17 +1,18 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const PAGE404 = () => {
   return (
-    <div className="box">
+    <div className="text-center">
       <div>Error 404 !!</div>
       <br></br>
       <p>
         PAGE NOT FOUND
-        <span style={{ color: "#ffc900" }}>
-          <a style={{ color: "#ffc900" }} href="/home">
-            back to home{" "}
-          </a>
-        </span>
+        <div>
+          <Link to="/home">
+            Back to home
+          </Link>
+        </div>
       </p>
     </div>
   );
