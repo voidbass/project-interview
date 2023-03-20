@@ -1,0 +1,23 @@
+module.exports = {
+  trailingComma: 'es5',
+  tabWidth: 2,
+  semi: true,
+  singleQuote: true,
+  printWidth: 120,
+  importOrder: [
+    'react(?!.*css)',
+    '^(antd|@ant|moment)',
+    '/constant',
+    '@/api',
+    '@/store',
+    '@/util',
+    '@/components',
+    'pages/',
+    'hooks/',
+    'utils/',
+    '[./](?!.*css)',
+    '[./]?(.css)',
+  ],
+  importOrderGroupNamespaceSpecifiers: true,
+  importOrderSeparation: true,
+};
