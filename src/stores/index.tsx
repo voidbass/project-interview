@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import listBlogsReducer from './slice/listBlogsReducer';
+import { rootReducer } from './reducers'
 
 const store = configureStore({
-  reducer: {
-    auth: listBlogsReducer,
-  },
+  reducer: rootReducer,
 });
+
+export type RootState = ReturnType<typeof rootReducer>
 
 export default store;

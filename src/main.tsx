@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 
-import store from '@/stores/index';
+import store from '@/stores/index'
 import './assets/scss/index.scss'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -14,5 +14,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <App />
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>,
+  </React.StrictMode>
 )

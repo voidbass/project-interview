@@ -1,9 +1,18 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-const SearchInput = (props: any) => {
+import '@/assets/scss/blogs.scss'
+
+type Props = {
+	onChange: (e: any) => void,
+	value: string,
+}
+
+const SearchInput = (props: Props) => {
 	const { onChange, value } = props
 	return (
-		<input value={value} onChange={onChange} />
+		<div className='blogs-search-input'>
+			<input value={value} onChange={onChange} />
+		</div>
 	)
 }
 

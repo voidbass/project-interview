@@ -1,10 +1,26 @@
 .blogs {
-		&-item {
-				display: flex;
-				gap: 4px;
-				&-image {
-						width: 64px;
-						height: 64px;
-				}
+	&-link {
+		color: black;
+		text-decoration: none;
+	}
+
+	&-item {
+		display: flex;
+		gap: 4px;
+
+		&-image {
+			width: 64px;
+			height: 64px;
+			object-fit: cover;
 		}
+	}
+
+	&-search-input {
+		margin-bottom: 16px;
+		margin-top: 16px;
+
+		input {
+			width: 100%;
+		}
+	}
 }
