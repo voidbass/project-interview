@@ -3,15 +3,15 @@ import React from 'react'
 import '@/assets/scss/blogs.scss'
 
 type Props = {
-	onChange: (e: any) => void,
+	onChangeInput: (e: any) => void,
 	value: string,
 }
 
 const SearchInput = (props: Props) => {
-	const { onChange, value } = props
+	const { onChangeInput, value } = props
 	return (
 		<div className='blogs-search-input'>
-			<input value={value} onChange={onChange} />
+			<input value={value} onChange={onChangeInput} placeholder="Searching..." />
 		</div>
 	)
 }

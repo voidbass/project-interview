@@ -1,11 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { BlogData, BlogDataDetail, } from "@/interface/blog"
+import { BlogDataBodyDetail, BlogDataDetail } from "@/interface/blog"
+import { Filter, FilterClass } from '@/interface/paginations';
 
 
 export type initialStateType = {
-  blogLists: BlogData[],
+  blogLists: Array<BlogDataBodyDetail>,
   blogDetail: BlogDataDetail,
-  loading: boolean,
+  filter: Filter,
+  loadingBlogs: boolean,
+  loadingDetail: boolean,
 }
 
 const initialState: initialStateType = {
@@ -20,9 +23,17 @@ const initialState: initialStateType = {
     createdAt: "",
     id: "",
     image: "",
-    title: ""
+    title: "",
   },
-  loading: false,
+  filter: {
+    limit: 10,
+    page: 1,
+    search: '',
+    sortBy: 'id',
+    order: 'asc',
+  },
+  loadingBlogs: false,
+  loadingDetail: false,
 }
 
 export const listBlogsReducer = createSlice({
@@ -41,23 +52,35 @@ export const listBlogsReducer = createSlice({
         blogDetail: action.payload
       };
     },
+    setBlogFilter: (state, action) => {
+      return {
+        ...state,
+        filter: { ...state.filter, ...action.payload }
+      };
+    },
+    setLoadingBlogs: (state, action) => {
+      return {
+        ...state,
+        loadingBlogs: action.payload
+      };
+    },
     getBlogDetailById: (state) => {
       return {
         ...state,
-        loading: true,
+        loadingDetail: true,
       };
     },
     getBlogDetailByIdSuccess: (state, action) => {
       return {
         ...state,
-        loading: false,
+        loadingDetail: false,
         blogDetail: action.payload
       };
     },
     getBlogDetailByIdFailure: (state) => {
       return {
         ...state,
-        loading: false,
+        loadingDetail: false,
         blogDetail: new BlogDataDetail()
       };
     },
@@ -69,5 +92,7 @@ export const listBlogsAction = listBlogsReducer.actions;
 export const getListBlogsData = (state: any) => state.listBlogs.blogLists;
 
 export const getBlogDetail = (state: any) => state.listBlogs.blogDetail;
+
+export const getBlogsFilter = (state: any) => state.listBlogs.filter;
 
 export default listBlogsReducer.reducer;

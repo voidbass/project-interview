@@ -13,11 +13,11 @@ const BlogContent = (props: any) => {
   }
 
   return (
-    <span className='blogs-link' onClick={onClickDetail}>
+    <span className='blogs-link' >
       <li className="media mb-4 blogs-item">
         <img src={image} className="mr-3 blogs-item-image" alt={title} />
         <div className="media-body">
-          <h5 className="mt-0 mb-1">{title}</h5>
+          <h5 className="mt-0 mb-1 cursor-pointer" onClick={onClickDetail}>{title}</h5>
           {content}
         </div>
       </li>

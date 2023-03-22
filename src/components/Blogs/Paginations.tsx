@@ -1,24 +1,52 @@
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 
-type Props = {}
+import "@/assets/scss/pagination.scss"
+
+type Props = {
+  page: number,
+  limit: number,
+  total: number,
+  changePage: (page: number) => void
+}
 
 const Paginations = (props: Props) => {
+  const { page = 1, limit = 10, total, changePage } = props
+  const countPage = useMemo(() => Math.floor(total / limit), [total, limit]);
+
+  const [currentPage, setCurrentPage] = useState(0)
+
+  const changePageCurrent = (page: number) => {
+    if (page < 0 || page > countPage - 1) return
+    setCurrentPage(page)
+    changePage(page + 1)
+  }
+
   return (
-    <nav aria-label="...">
+    <nav>
       <ul className="pagination">
-        <li className="page-item disabled">
+        <li
+          className={`page-item ${currentPage > 0 ? "" : "disabled"}`}
+          onClick={() => changePageCurrent(currentPage - 1)}
+        >
           <span className="page-link">Previous</span>
         </li>
-        <li className="page-item"><a className="page-link" href="#">1</a></li>
-        <li className="page-item active" aria-current="page">
-          <span className="page-link">
-            2
-            <span className="sr-only">(current)</span>
-          </span>
-        </li>
-        <li className="page-item"><a className="page-link" href="#">3</a></li>
-        <li className="page-item">
-          <a className="page-link" href="#">Next</a>
+        {
+          [...Array(countPage).keys()].map(item => (
+            <li key={item}
+              className={`page-item ${item === currentPage ? "active" : ""}`}
+              aria-current="page"
+              onClick={() => changePageCurrent(item)}
+            >
+              <span className="page-link">
+                {item + 1}
+              </span>
+            </li>
+          ))}
+        <li
+          className={`page-item ${currentPage >= countPage - 1 ? "disabled" : ""}`}
+          onClick={() => changePageCurrent(currentPage + 1)}
+        >
+          <span className="page-link">Next</span>
         </li>
       </ul>
     </nav>

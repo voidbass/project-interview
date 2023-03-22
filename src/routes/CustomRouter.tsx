@@ -4,7 +4,7 @@ import { useRoutes } from "react-router-dom";
 import { UrlConstants } from "@/constants/UrlConstants"
 
 import Home from "@/pages/home"
-import HomeDetail from "@/pages/homeDetail"
+import HomeDetail from "@/pages/home-detail"
 
 import PAGE404 from "@/components/Errors/Page404"
 import PAGE401 from "@/components/Errors/Page401"

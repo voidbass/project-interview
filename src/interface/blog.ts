@@ -18,7 +18,7 @@ export class BlogDataBodyDetail {
   image?: string
   title?: string
 
-  constructor(data?: BlogDataBodyDetail) {
+  constructor(data?: BlogDataBody) {
     this.content = data?.content
     this.image = data?.image
     this.title = data?.title

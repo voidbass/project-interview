@@ -2,22 +2,52 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { debounce } from "lodash"
 
-import { RootState } from '@/stores'
 import { getBlogsList } from '@/api/blogApi'
 import BlogItem from '@/components/Blogs/BlogItem'
 import SearchInput from '@/components/Blogs/SearchInput'
+import Paginations from '@/components/Blogs/Paginations';
+import SelectOption from '@/components/Blogs/SelectOption';
+
+import { RootState } from '@/stores'
+import { listBlogsAction } from '@/stores/slice/listBlogsReducer';
+import { FilterClass } from '@/interface/paginations';
 
 import "@/assets/scss/index.scss"
 
 const Home = () => {
   const dispatch = useDispatch()
+  const optionSelect = [
+    {
+      key: "id",
+      value: "ID",
+    },
+    {
+      key: "title",
+      value: "Title",
+    },
+    {
+      key: "content",
+      value: "Content",
+    },
+    {
+      key: "image",
+      value: "Image",
+    },
+    {
+      key: "createdAt",
+      value: "Created At",
+    },
+  ]
+
   const [listBlogs, setListBlogs] = useState([])
   const [searchValue, setSearchValue] = useState("")
-  const { blogLists } = useSelector((state: RootState) => state.listBlogs)
-  console.log('blogLists', blogLists)
+
+  const { filter, loadingBlogs } = useSelector((state: RootState) => state.listBlogs)
+  const { page = 1, limit = 10 } = filter
+
 
   const handleSearchAfterDebounce = debounce(async (value: string) => {
-    await fetchListBlog(value)
+    await fetchListBlog({ search: value })
   }, 500)
 
   const handleChangeSearchValue = useCallback((e: any) => {
@@ -25,24 +55,42 @@ const Home = () => {
     handleSearchAfterDebounce(e.target.value)
   }, [])
 
-  const fetchListBlog = async (val: string) => {
+  const fetchListBlog = useCallback(async (params: FilterClass) => {
     try {
-      const response = await getBlogsList({ search: val })
+      dispatch(listBlogsAction.setLoadingBlogs(true))
+      dispatch(listBlogsAction.setBlogFilter(params))
+      const response = await getBlogsList(params)
       if (response?.data) {
         setListBlogs(response.data)
       }
     } catch (error) {
       console.log('error :>> ', error);
+    } finally {
+      dispatch(listBlogsAction.setLoadingBlogs(false))
     }
-  }
+  }, [filter, getBlogsList, listBlogsAction])
+
+  const changePage = useCallback(async (page: number) => {
+    await fetchListBlog({ ...filter, page })
+  }, [filter])
+
+  const onChangeSelect = useCallback(async (opt: any) => {
+    await fetchListBlog({ ...filter, sortBy: opt.key })
+  }, [filter])
 
   useEffect(() => {
-    fetchListBlog("")
+    fetchListBlog(filter)
   }, [])
 
   return (
     <>
-      <SearchInput onChange={handleChangeSearchValue} value={searchValue} />
+      {!loadingBlogs ? <div className="spinner-border text-primary blogs-spinner-loading" role="status">
+        <span className="sr-only"></span>
+      </div> : ""}
+      <div className='d-flex justify-content-between w-100'>
+        <SearchInput onChangeInput={handleChangeSearchValue} value={searchValue} />
+        <SelectOption name="select-blogs" optionSelect={optionSelect} onChangeSelect={onChangeSelect} />
+      </div>
       <ul className="list-unstyled">
         {listBlogs?.length > 0 ?
           listBlogs.map((item: any) => (
@@ -50,6 +98,8 @@ const Home = () => {
           ))
           : ""}
       </ul>
+
+      <Paginations page={page} limit={limit} total={100} changePage={changePage} />
     </>
   )
 }

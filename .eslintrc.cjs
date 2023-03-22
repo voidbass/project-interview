@@ -15,7 +15,6 @@ module.exports = {
   },
   plugins: [
     'react',
-    "only-error"
   ],
   rules: {
     "@typescript-eslint/explicit-function-return-type": "warning",
