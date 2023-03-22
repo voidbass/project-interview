@@ -47,7 +47,7 @@ const Home = () => {
 
 
   const handleSearchAfterDebounce = debounce(async (value: string) => {
-    await fetchListBlog({ search: value })
+    await fetchListBlog({ ...filter, search: value })
   }, 500)
 
   const handleChangeSearchValue = useCallback((e: any) => {
@@ -84,14 +84,14 @@ const Home = () => {
 
   return (
     <>
-      {!loadingBlogs ? <div className="spinner-border text-primary blogs-spinner-loading" role="status">
+      {loadingBlogs ? <div className="spinner-border text-primary blogs-spinner-loading" role="status">
         <span className="sr-only"></span>
       </div> : ""}
       <div className='d-flex justify-content-between w-100'>
         <SearchInput onChangeInput={handleChangeSearchValue} value={searchValue} />
         <SelectOption name="select-blogs" optionSelect={optionSelect} onChangeSelect={onChangeSelect} />
       </div>
-      <ul className="list-unstyled">
+      <ul className={`list-unstyled ${loadingBlogs ? "loading-disabled" : ""}`}>
         {listBlogs?.length > 0 ?
           listBlogs.map((item: any) => (
             <BlogItem id={item.id} key={item.id} title={item.title} content={item.content} image={item.image} />

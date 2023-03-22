@@ -33,8 +33,8 @@ export class BlogDataDetail {
   image?: string
   title?: string
 
-  constructor(data?: BlogData) {
-    this.body = new BlogDataBodyDetail(data?.body)
+  constructor(data?: any) {
+    this.body = new BlogDataBodyDetail(data?.body) || ""
     this.content = data?.content
     this.createdAt = data?.createdAt
     this.id = data?.id

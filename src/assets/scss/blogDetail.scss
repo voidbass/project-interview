@@ -1,0 +1,19 @@
+.blog-detail {
+	text-align: center;
+	&-title {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 40px;
+	}
+
+	&-image {
+		margin: 20px auto;
+		object-fit: cover;
+		width: 600px;
+		height: 600px;
+	}
+
+	&-content {
+		margin: 0 auto;
+	}
+}

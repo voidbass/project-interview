@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-export async function getBlogsList(params: any) {
+import { Filter } from '@/interface/paginations';
+
+export async function getBlogsList(params: Filter) {
 	try {
 		const response = axios.get("https://5f55a98f39221c00167fb11a.mockapi.io/blogs", { params })
 		return response
@@ -9,7 +11,7 @@ export async function getBlogsList(params: any) {
 	}
 }
 
-export async function getBlogDetail(id: string | number) {
+export async function getBlogDetail(id: string | number | undefined) {
 	try {
 		const response = axios.get(`https://5f55a98f39221c00167fb11a.mockapi.io/blogs/${id}`)
 		return response

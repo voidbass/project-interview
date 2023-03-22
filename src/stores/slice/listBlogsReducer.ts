@@ -89,10 +89,4 @@ export const listBlogsReducer = createSlice({
 
 export const listBlogsAction = listBlogsReducer.actions;
 
-export const getListBlogsData = (state: any) => state.listBlogs.blogLists;
-
-export const getBlogDetail = (state: any) => state.listBlogs.blogDetail;
-
-export const getBlogsFilter = (state: any) => state.listBlogs.filter;
-
 export default listBlogsReducer.reducer;

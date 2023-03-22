@@ -7,19 +7,20 @@ import { getBlogDetail } from '@/api/blogApi'
 
 import { RootState } from '@/stores'
 import { UrlConstants } from '@/constants/UrlConstants';
-import "@/assets/scss/index.scss"
+import { listBlogsAction } from '@/stores/slice/listBlogsReducer';
+import { BlogDataDetail } from '@/interface/blog';
+import "@/assets/scss/blogDetail.scss"
 
 const HomeDetail = (props: any) => {
   const dispatch = useDispatch()
   const { id } = useParams()
 
   const { blogDetail } = useSelector((state: RootState) => state.listBlogs)
-  console.log('blogDetail', blogDetail)
 
   const fetchBlogDetail = async () => {
     try {
-      const response = await getBlogDetail(id || 65)
-      // if (response?.data) dispatch(response.data)
+      const response = await getBlogDetail(id)
+      if (response?.data) dispatch(listBlogsAction.setBlogDetail(new BlogDataDetail(response.data)))
     } catch (error) {
       console.log('error :>> ', error);
     }
@@ -35,7 +36,9 @@ const HomeDetail = (props: any) => {
         Back to List Blogs
       </Link>
       <div className='blog-detail'>
-        <h5 >{ }</h5>
+        <h5 className='blog-detail-title'>{blogDetail.title}</h5>
+        <img src={blogDetail.image} className='blog-detail-image' />
+        <div className='blog-detail-content'>{blogDetail.content}</div>
       </div>
     </>
   )
