@@ -7,8 +7,8 @@ export interface Filter {
 }
 
 export class FilterClass {
-  limit?: number
-  page?: number
+  limit?: string | number
+  page?: string | number
   search?: string
   sortBy?: string
   order?: string

@@ -10,13 +10,18 @@ import SelectOption from '@/components/Blogs/SelectOption';
 
 import { RootState } from '@/stores'
 import { listBlogsAction } from '@/stores/slice/listBlogsReducer';
-import { FilterClass } from '@/interface/paginations';
+import { Filter } from '@/interface/paginations';
 
 import "@/assets/scss/index.scss"
 
+type optionValue = {
+  key: string,
+  value: string,
+}
+
 const Home = () => {
   const dispatch = useDispatch()
-  const optionSelect = [
+  const optionSelectFilter = [
     {
       key: "id",
       value: "ID",
@@ -39,23 +44,24 @@ const Home = () => {
     },
   ]
 
+  const optionSelectOrder = [
+    {
+      key: "asc",
+      value: "Ascending",
+    },
+    {
+      key: "desc",
+      value: "Descending",
+    },
+  ]
+
   const [listBlogs, setListBlogs] = useState([])
   const [searchValue, setSearchValue] = useState("")
 
   const { filter, loadingBlogs } = useSelector((state: RootState) => state.listBlogs)
   const { page = 1, limit = 10 } = filter
 
-
-  const handleSearchAfterDebounce = debounce(async (value: string) => {
-    await fetchListBlog({ ...filter, search: value })
-  }, 500)
-
-  const handleChangeSearchValue = useCallback((e: any) => {
-    setSearchValue(e.target.value)
-    handleSearchAfterDebounce(e.target.value)
-  }, [])
-
-  const fetchListBlog = useCallback(async (params: FilterClass) => {
+  const fetchListBlog = useCallback(async (params: Filter) => {
     try {
       dispatch(listBlogsAction.setLoadingBlogs(true))
       dispatch(listBlogsAction.setBlogFilter(params))
@@ -70,12 +76,25 @@ const Home = () => {
     }
   }, [filter, getBlogsList, listBlogsAction])
 
+  const handleSearchAfterDebounce = debounce(async (value: string, params: Filter) => {
+    await fetchListBlog({ ...params, search: value })
+  }, 500)
+
+  const handleChangeSearchValue = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value)
+    handleSearchAfterDebounce(e.target.value, filter)
+  }, [filter])
+
   const changePage = useCallback(async (page: number) => {
     await fetchListBlog({ ...filter, page })
   }, [filter])
 
-  const onChangeSelect = useCallback(async (opt: any) => {
+  const onChangeSelectFilter = useCallback(async (opt: optionValue) => {
     await fetchListBlog({ ...filter, sortBy: opt.key })
+  }, [filter])
+
+  const onChangeSelectOrder = useCallback(async (opt: optionValue) => {
+    await fetchListBlog({ ...filter, order: opt.key })
   }, [filter])
 
   useEffect(() => {
@@ -89,7 +108,10 @@ const Home = () => {
       </div> : ""}
       <div className='d-flex justify-content-between w-100'>
         <SearchInput onChangeInput={handleChangeSearchValue} value={searchValue} />
-        <SelectOption name="select-blogs" optionSelect={optionSelect} onChangeSelect={onChangeSelect} />
+        <div className='d-flex'>
+          <SelectOption name="blogs-filter" optionSelect={optionSelectFilter} onChangeSelect={onChangeSelectFilter} />
+          <SelectOption name="blogs-order" optionSelect={optionSelectOrder} onChangeSelect={onChangeSelectOrder} />
+        </div>
       </div>
       <ul className={`list-unstyled ${loadingBlogs ? "loading-disabled" : ""}`}>
         {listBlogs?.length > 0 ?
